@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>main Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initialscale=1"> 
+<link rel="stylesheet" href="lib\bootstrap-3.3.7-dist\css\bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="WEB-INF\CSS\mainCss.css"/>
+<script src=http://code.jquery.com/jquery-1.11.3.min.js></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+<!-- 
+<script>
+$(document).ready(function(){
+		$("button").click(function(){
+				alert("!!");
+			}); 
+			<!--$("#t").click(formToJson($("#userform")));
+});
+
+<!--
+function formToJson(form){
+	var msg="clicked!";
+	alert(msg);
+	 $.each($(":input")),function(index, value){
+		$("#lastrow").text=($("#userform").getElements[index]+"="+value); 
+	});
+}
+</script> -->
+ 
+<style>
+div.container {
+	vertical-align:middle;
+    width: 100%;
+    border: 1px solid gray;
+}
+div.col-sm-6 {
+	font-size:12;
+	vertical-align:middle;
+	background-color:yellow;
+}
+
+.ex {
+	height=200px;
+	
+}
+.center
+{
+	text-align:center;
+	horizontal-align:center;
+}
+
+
+header {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: right;
+}
+
+footer {
+	margin:100px 0px 0px 0px;
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;
+} 
+
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+   
+nav ul a {
+    text-decoration: none;
+}
+
+article {
+    margin-left: 170px;
+    border: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+</style>
+
+ <script>
+ $(document).ready(function(){
+	$("#t").click(function(){
+		var par = String.fromCharCode(34); 
+		var msg="{ ";
+		var arr=$("#frm input");
+		for(var i=0;i<arr.length;i++){
+			msg = msg + par + arr[i].id.toString() + par + ": " + par + arr[i].value.toString() + par;
+			if(i != arr.length-1){
+				msg = msg + ", "; 
+			}
+			
+		}
+		msg = msg + " }";
+		alert(msg);
+		$("#lastp").text(msg); 
+	});	
+}); 
+ </script>
+ 
+ <script>
+ $(document).ready(function(){
+		$("#sndmsg").click(function(){
+			$("#cnvrs").val(function(){
+				var oldcnvrs = $("#cnvrs").val();	//all conversations until now
+				var msg = "> ";
+				msg = msg + $("#msg").val() + String.fromCharCode(10);
+				return (oldcnvrs + msg);
+			});
+			
+			$("#msg").val(""); 
+		});
+ });
+ </script>
+</head>
+
+<body>
+	<header>welcome guest! please 	
+	<a href="">sign in</a>
+	or
+	<a href="">register</a> 
+	</header>
+	<div class="jumbotron">
+	<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="container">
+					<h1 class="display-2">Add here</h1>
+					<p class="ex" align="center">use this great place to advocate your business</p>
+					<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+				</div>
+				</div>
+			<div class="col-sm-6" >
+			<h2 class="center">register for webapp &trade;</h2>
+			<div id="frm">
+				<form id="userform">
+					<div class="form-group">
+					<label for="user">user name</label>
+					<input type="text" class="form-control" id="user">
+					
+					<label for="password">password</label>
+					<input type="text" class="form-control" id="password">
+					
+					<label for="nickname">nick name*</label>
+					<input type="text" class="form-control" id="nickname">
+					
+					<label for="description">description*</label>
+					<input type="text" class="form-control" id="description">
+					
+					<label for="photo">photo*</label>
+					<input type="text" class="form-control" id="photo">
+					
+					</div>
+					<button type="button" class="btn btn-default" id="t">register</button>
+					<p>* optional</p>
+				</form>
+			</div>
+			</div>
+			<div class="col-sm-3">
+      			<div class="container">
+        		<h1 class="display-3">Hello, world!</h1>
+        		<p>or, try to add here</p>
+        		<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+      			</div>
+    		</div>
+		</div>
+	</div>
+	</div>
+	
+	<div class="jumbotron">
+		<div class="container">
+			<!-- conversations -->
+			<div class="col-sm-6">
+				<div class="container">			
+					<h2>conversation</h2>
+					<textarea class="form-control" rows="10" cols="7" id="cnvrs"></textarea>
+					<br>
+				</div>
+			</div>
+			
+			<!-- messages -->
+			<div class="col-sm-6">
+				<div class="container">
+					<!-- messages -->
+					<div class="col-sm-8">
+						<h2 align="center"> new message</h2>
+						<textarea class="form-control" rows="5" cols="4" id="msg"></textarea>
+						<br>
+						<button type="button" class="btn btn-default" id="sndmsg">send</button>
+					</div>
+					<!-- channels -->
+					<div class="col-sm-4">
+						<h2>channels</h2>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<div class="row" id="lastrow">
+	<h1 id="lasth"></h1>
+	<p id="lastp"></p>
+	</div>
+
+	<p>&copy; WebApp fall semester 2017</p>
+</body>
+</html>
