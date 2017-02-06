@@ -8,24 +8,6 @@
 <link rel="stylesheet" type="text/css" href="WEB-INF\CSS\mainCss.css"/>
 <script src=http://code.jquery.com/jquery-1.11.3.min.js></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
-<!-- 
-<script>
-$(document).ready(function(){
-		$("button").click(function(){
-				alert("!!");
-			}); 
-			<!--$("#t").click(formToJson($("#userform")));
-});
-
-<!--
-function formToJson(form){
-	var msg="clicked!";
-	alert(msg);
-	 $.each($(":input")),function(index, value){
-		$("#lastrow").text=($("#userform").getElements[index]+"="+value); 
-	});
-}
-</script> -->
  
 <style>
 div.container {
@@ -89,8 +71,26 @@ article {
     padding: 1em;
     overflow: hidden;
 }
+
+ul {
+	list-style:none;
+}
 </style>
 
+<!-- 
+<script>
+var websocket = new WebSocket("ws://www.host.com/path");
+websocket.onopen = function(evt) { onOpen(evt) };
+websocket.onclose = function(evt) { onClose(evt) };
+websocket.onmessage = function(evt) { onMessage(evt) };
+websocket.onerror = function(evt) { onError(evt) }; }
+function onOpen(evt) { alert( evt.data); }
+function onClose(evt) { alert( evt.data); }
+function onMessage(evt) { alert( evt.data); }
+function onError(evt) { alert( evt.data); }
+websocket.send("client to server");
+</script>
+ -->
  <script>
  $(document).ready(function(){
 	$("#t").click(function(){
@@ -111,17 +111,66 @@ article {
 }); 
  </script>
  
+ <script> 
+ $(document).ready(function(){
+	 $("#sndmsg").click(function(event){
+		 var msg = $("#msg").val(); 
+		event.preventDefault();
+		$("#conversation").append('<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>');
+		$("#msg").val("");
+	 });
+ });
+ </script>
+ 
+<!-- 
  <script>
  $(document).ready(function(){
 		$("#sndmsg").click(function(){
-			$("#cnvrs").val(function(){
-				var oldcnvrs = $("#cnvrs").val();	//all conversations until now
+			if($("#msg").val()=="")
+				alert("message is empty!");
+			else{
+				var count = 0;
 				var msg = "> ";
-				msg = msg + $("#msg").val() + String.fromCharCode(10);
-				return (oldcnvrs + msg);
+				msg = msg + $("#msg").val(); 
+
+				
+				$("#conversation").append('<a class="list-group-item list-group-item-success" id="jj")>'+msg+'</a>'); 
+
+					
+				}
+				
+				$("#msg").val(""); 
 			});
-			
-			$("#msg").val(""); 
+ });
+ 
+ $(document).on("click", "#jj", function(this){
+	 alert("jj"); 
+ });
+ </script>
+  -->
+ <script>
+ $(document).ready(function(){
+	 $(".msg_rply").on("click",function(){
+		 alert("clicked"); 
+	 });
+	 
+	 $("viewchildren").click(function(){
+		 alert(function(){
+			 var msg = "";
+			 var children = $("#msgs").children("a");
+			 for(var i=0;i<children.length;i++){
+				 
+			 }
+		 });
+	 });
+ });
+ </script>
+ 
+ <script>
+ $(document).raedy(function(){
+		var line = $("#cnvrs").val().split('\n'); 
+		$.each(lines, function(key, line){
+			alert(key + ":" + value); 
 		});
  });
  </script>
@@ -181,14 +230,16 @@ article {
 	</div>
 	
 	<div class="jumbotron">
-		<div class="container">
+		<div class="container" overflow="auto">
 			<!-- conversations -->
-			<div class="col-sm-6">
-				<div class="container">			
+			<div class="col-sm-6" >	
+				<object height="40px" >
 					<h2>conversation</h2>
-					<textarea class="form-control" rows="10" cols="7" id="cnvrs"></textarea>
+					<!-- <textarea class="form-control" rows="10" cols="7" id="cnvrs"></textarea> -->
+					<ul class="list-group" id="conversation" >
+					</ul>
 					<br>
-				</div>
+				</object>
 			</div>
 			
 			<!-- messages -->
@@ -213,8 +264,15 @@ article {
 	</div>
 	
 	<div class="row" id="lastrow">
-	<h1 id="lasth"></h1>
-	<p id="lastp"></p>
+		<div class="container" id="msgs">
+			<h1 id="lasth"></h1>
+			
+			<p id="lastp">
+				<span id="myspan"></span>
+			</p>
+			<button type="button" class="btn btn-default" id="viewchildren">view children</button>
+			<br>
+		</div>
 	</div>
 
 	<p>&copy; WebApp fall semester 2017</p>
