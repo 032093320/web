@@ -110,6 +110,10 @@ websocket.send("client to server");
 			"username": user
 	};
 }
+
+		if(i != arr.length-1){
+			msg = msg + ", "; 
+		}
  -->
  <script>
  $(document).ready(function(){
@@ -119,7 +123,7 @@ websocket.send("client to server");
 		var myjson = JSON.stringify(msg);
 		alert(msg); 
 		$.post(	url,
-				myjson,
+				msg,
 				function(data){
 			alert(data);
 		});
@@ -136,17 +140,15 @@ function getUser(){
 
 
 function createJSONFromUser(){
-	var par = String.fromCharCode(34); 
-	var nl = String.fromCharCode(10); 
-	var msg="{";
+	var par = String.fromCharCode(34);	//paranthacies char
+	var spar = String.fromCharCode(39);	//single par char
+	var nl = String.fromCharCode(10);	//new line char 
+	var msg="{ ";
 	var arr=$("#frm input");
 	for(var i=0;i<arr.length;i++){
-		msg = msg + par + arr[i].id.toString() + par + ": " + par + arr[i].value.toString() + par;
-		if(i != arr.length-1){
-			msg = msg + ", "; 
-		}		
+		msg = msg + par + arr[i].id.toString() + par + ": " + arr[i].value.toString() + " ";		
 	}
-	msg = msg + "}";
+	msg = msg + " }";
 	return msg;
 }
 
@@ -265,7 +267,7 @@ function createJSONFromUser(){
 				</object>
 			</div>
 			
-			<!-- messages -->
+			<!-- messages and channels-->
 			<div class="col-sm-6">
 				<div class="container">
 					<!-- messages -->

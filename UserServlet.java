@@ -1,5 +1,6 @@
 package servlets;
 
+import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,8 +23,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import com.google.gson.Gson;
 
 import model.Users;
 import utilities.AppConstants;
@@ -89,17 +90,34 @@ public class UserServlet extends HttpServlet {
 					parameters = request.getParameterMap(); 
 					ArrayList<String> values = new ArrayList<String>(); 
 					Iterator iter = parameters.keySet().iterator(); 
+					Gson gson = new Gson();
+					String temp = "";
 
 					try 
 					{
-						//values.addAll(param.values());
+						/*BufferedReader reader = request.getReader();
+						String line;
+						while((line = reader.readLine())!=null)
+						{
+							System.out.println(line);
+						}
+						//values.addAll(param.values());*/
 						while(iter.hasNext())
 						{
-							/*String key = (String)iter.next();
-							values.add((String)parameters.get(key));*/
-							System.out.println((String)iter.next()); 
+							String key = (String)iter.next();
+							//values.add((String)parameters.get(key));
+							temp = (String)iter.next();
+							System.out.println("temp: " + temp); 
+
+							
 						}
-						query = insert("USERS", values);
+						//Users user = gson.fromJson(temp, Users.class); 
+						//user.printUser();
+						//List<string> target = gson.fromJson(temp, typeOfT)
+						ArrayList<String> target = utilities.Parser.getValues(temp);
+						query = insert("USERS", target);
+						System.out.println(query);
+						statement.executeUpdate(query); 
 					} 
 					catch (Exception e) 
 					{
@@ -165,7 +183,7 @@ public class UserServlet extends HttpServlet {
 				if(i<size - 1)
 					query = query + ", ";
 			}
-			query.concat(")"); 		
+			query = query + ")"; 		
 
 		}
 		catch(Exception e){
