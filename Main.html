@@ -90,25 +90,66 @@ function onMessage(evt) { alert( evt.data); }
 function onError(evt) { alert( evt.data); }
 websocket.send("client to server");
 </script>
+
+		var msg = createJSONFromUser();
+		$.post('http://localhost:8080/webapp/LoginServlet', //where to
+				msg,										//what
+				function(data, status) {					//handle rensponse
+			alert("data:" + data + "\nstatus:" + status);
+		});
+		
+						function(){
+			var user = $("#user").val();
+			if($(user == "") user = "guest;
+			return user;
+			} 
+			
+			function createJson(){
+	var user = $("#user")val();
+	var jsonObj = {
+			"username": user
+	};
+}
  -->
  <script>
  $(document).ready(function(){
-	$("#t").click(function(){
-		var par = String.fromCharCode(34); 
-		var msg="{ ";
-		var arr=$("#frm input");
-		for(var i=0;i<arr.length;i++){
-			msg = msg + par + arr[i].id.toString() + par + ": " + par + arr[i].value.toString() + par;
-			if(i != arr.length-1){
-				msg = msg + ", "; 
-			}
-			
-		}
-		msg = msg + " }";
-		alert(msg);
+	$("#rgstrBtn").click(function(){
+		var url = 'http://localhost:8080/webapp/UserServlet' + '?query=insert';
+		var msg = createJSONFromUser();
+		var myjson = JSON.stringify(msg);
+		alert(msg); 
+		$.post(	url,
+				myjson,
+				function(data){
+			alert(data);
+		});
+		
 		$("#lastp").text(msg); 
 	});	
-}); 
+});
+
+function getUser(){
+	var username = $("#user").val();
+	if (username == "") username = "guest";
+	return username;
+} 
+
+
+function createJSONFromUser(){
+	var par = String.fromCharCode(34); 
+	var nl = String.fromCharCode(10); 
+	var msg="{";
+	var arr=$("#frm input");
+	for(var i=0;i<arr.length;i++){
+		msg = msg + par + arr[i].id.toString() + par + ": " + par + arr[i].value.toString() + par;
+		if(i != arr.length-1){
+			msg = msg + ", "; 
+		}		
+	}
+	msg = msg + "}";
+	return msg;
+}
+
  </script>
  
  <script> 
@@ -116,38 +157,20 @@ websocket.send("client to server");
 	 $("#sndmsg").click(function(event){
 		 var msg = $("#msg").val(); 
 		event.preventDefault();
-		$("#conversation").append('<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>');
-		$("#msg").val("");
+		if(msg=="") alert("message is empty");
+		else
+			{
+				$("#conversation").append('<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>');
+				$("#msg").val("");
+			}
 	 });
  });
  </script>
  
-<!-- 
  <script>
- $(document).ready(function(){
-		$("#sndmsg").click(function(){
-			if($("#msg").val()=="")
-				alert("message is empty!");
-			else{
-				var count = 0;
-				var msg = "> ";
-				msg = msg + $("#msg").val(); 
 
-				
-				$("#conversation").append('<a class="list-group-item list-group-item-success" id="jj")>'+msg+'</a>'); 
-
-					
-				}
-				
-				$("#msg").val(""); 
-			});
- });
- 
- $(document).on("click", "#jj", function(this){
-	 alert("jj"); 
- });
  </script>
-  -->
+
  <script>
  $(document).ready(function(){
 	 $(".msg_rply").on("click",function(){
@@ -213,7 +236,7 @@ websocket.send("client to server");
 					<input type="text" class="form-control" id="photo">
 					
 					</div>
-					<button type="button" class="btn btn-default" id="t">register</button>
+					<button type="button" class="btn btn-default" id="rgstrBtn">register</button>
 					<p>* optional</p>
 				</form>
 			</div>
