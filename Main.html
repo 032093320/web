@@ -114,31 +114,19 @@ websocket.send("client to server");
 		if(i != arr.length-1){
 			msg = msg + ", "; 
 		}
- -->
- <script>
- $(document).ready(function(){
-	$("#rgstrBtn").click(function(){
-		var url = 'http://localhost:8080/webapp/UserServlet' + '?query=insert';
-		var msg = createJSONFromUser();
-		var myjson = JSON.stringify(msg);
-		alert(msg); 
-		$.post(	url,
-				msg,
-				function(data){
-			alert(data);
-		});
 		
-		$("#lastp").text(msg); 
-	});	
-});
-
-function getUser(){
-	var username = $("#user").val();
-	if (username == "") username = "guest";
-	return username;
-} 
-
-
+		function createJSON(){
+	jsonObj = {};
+	$("#frm input").each(function(){
+		
+		var id = $(this).attr("id");
+		var value = $(this).val();
+		
+		item = {id, value};
+		jsonObj.push(item); 
+	});
+	
+}
 function createJSONFromUser(){
 	var par = String.fromCharCode(34);	//paranthacies char
 	var spar = String.fromCharCode(39);	//single par char
@@ -150,9 +138,31 @@ function createJSONFromUser(){
 	}
 	msg = msg + " }";
 	return msg;
+	
+		var arr = $("#frm input");	
+		
 }
+ -->
+ <script>
+ $(document).ready(function(){
+	$("#rgstrBtn").click(function(){
+		var my_form = document.getElementById("frm");
+		var url = 'http://localhost:8080/webapp/UserServlet' + '?query=insert';		
+		var myjson = JSON.stringify(createJSON(my_form));
+		$.post(	url,
+				myjson,
+				function(data){
+			alert(data);
+		});
+	});	
+});
 
- </script>
+function getUser(){
+	var username = $("#user").val();
+	if (username == "") username = "guest";
+	return username;
+} 
+</script>
  
  <script> 
  $(document).ready(function(){
@@ -169,8 +179,18 @@ function createJSONFromUser(){
  });
  </script>
  
- <script>
-
+<script>
+function createJSON(my_form){
+	var arr = my_form.getElementsByTagName("input"); 
+	var jsonObj = {};
+	jsonObj["username"] = arr[0].value.toString();
+	jsonObj["password"] = arr[1].value.toString();
+	jsonObj["nickname"] = arr[2].value.toString();
+	jsonObj["description"] = arr[3].value.toString();
+	jsonObj["photo"] = arr[4].value.toString();
+	
+	return jsonObj;
+}
  </script>
 
  <script>
@@ -280,6 +300,15 @@ function createJSONFromUser(){
 					<!-- channels -->
 					<div class="col-sm-4">
 						<h2>channels</h2>
+						<div class="dropdown">
+  							<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+  							<span class="caret"></span></button>
+  							<ul class="dropdown-menu">
+    							<li><a href="#">HTML</a></li>
+    							<li><a href="#">CSS</a></li>
+    							<li><a href="#">JavaScript</a></li>
+  							</ul>
+						</div>
 					</div>
 
 				</div>

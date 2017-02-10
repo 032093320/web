@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import model.Users;
 import utilities.AppConstants;
@@ -88,36 +92,29 @@ public class UserServlet extends HttpServlet {
 					
 				case "insert":
 					parameters = request.getParameterMap(); 
+					JsonElement map; 
 					ArrayList<String> values = new ArrayList<String>(); 
 					Iterator iter = parameters.keySet().iterator(); 
-					Gson gson = new Gson();
 					String temp = "";
+					JsonParser parser;
 
 					try 
 					{
-						/*BufferedReader reader = request.getReader();
-						String line;
-						while((line = reader.readLine())!=null)
-						{
-							System.out.println(line);
-						}
-						//values.addAll(param.values());*/
 						while(iter.hasNext())
 						{
-							String key = (String)iter.next();
-							//values.add((String)parameters.get(key));
 							temp = (String)iter.next();
-							System.out.println("temp: " + temp); 
-
-							
+							//System.out.println("temp: " + temp); 							
 						}
-						//Users user = gson.fromJson(temp, Users.class); 
-						//user.printUser();
-						//List<string> target = gson.fromJson(temp, typeOfT)
-						ArrayList<String> target = utilities.Parser.getValues(temp);
-						query = insert("USERS", target);
+						
+						parser = new JsonParser();
+						
+						map =  parser.parse(temp);  
+						//System.out.println(map.getAsString()); 
+						
+						values = utilities.Parser.getValues(temp);
+						query = insert("USERS", values);
 						System.out.println(query);
-						statement.executeUpdate(query); 
+						//statement.executeUpdate(query); 
 					} 
 					catch (Exception e) 
 					{
