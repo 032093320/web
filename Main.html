@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initialscale=1"> 
 <link rel="stylesheet" href="lib\bootstrap-3.3.7-dist\css\bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="WEB-INF\CSS\mainCss.css"/>
+<link rel="stylesheet" type="text/css" href="lib\bootstrap-3.3.7-dist\mainCss.css?version=1"/>
 <script src=http://code.jquery.com/jquery-1.11.3.min.js></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
- 
+<!--  
 <style>
 div.container {
 	vertical-align:middle;
@@ -76,103 +76,67 @@ ul {
 	list-style:none;
 }
 </style>
-
-<!-- 
-<script>
-var websocket = new WebSocket("ws://www.host.com/path");
-websocket.onopen = function(evt) { onOpen(evt) };
-websocket.onclose = function(evt) { onClose(evt) };
-websocket.onmessage = function(evt) { onMessage(evt) };
-websocket.onerror = function(evt) { onError(evt) }; }
-function onOpen(evt) { alert( evt.data); }
-function onClose(evt) { alert( evt.data); }
-function onMessage(evt) { alert( evt.data); }
-function onError(evt) { alert( evt.data); }
-websocket.send("client to server");
-</script>
  -->
  <script>
  $(document).ready(function(){
-	$("#t").click(function(){
-		var par = String.fromCharCode(34); 
-		var msg="{ ";
-		var arr=$("#frm input");
-		for(var i=0;i<arr.length;i++){
-			msg = msg + par + arr[i].id.toString() + par + ": " + par + arr[i].value.toString() + par;
-			if(i != arr.length-1){
-				msg = msg + ", "; 
-			}
-			
-		}
-		msg = msg + " }";
-		alert(msg);
-		$("#lastp").text(msg); 
+	$("#rgstrBtn").click(function(){
+		var my_form = document.getElementById("frm");
+		var url = 'http://localhost:8080/webapp/UserServlet' + '?query=insert';		
+		var myjson = JSON.stringify(createJSON(my_form));
+		$.post(	url,
+				myjson,
+				function(data){
+			alert(data);
+		});
 	});	
-}); 
- </script>
+});
+
+function getUser(){
+	var username = $("#user").val();
+	if (username == "") username = "guest";
+	return username;
+} 
+</script>
  
  <script> 
  $(document).ready(function(){
 	 $("#sndmsg").click(function(event){
 		 var msg = $("#msg").val(); 
 		event.preventDefault();
-		$("#conversation").append('<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>');
-		$("#msg").val("");
+		if(msg=="") alert("message is empty");
+		else
+			{
+				$("#conversation").append(createMessage(msg));
+				$("#msg").val("");
+			}
 	 });
  });
  </script>
  
-<!-- 
- <script>
- $(document).ready(function(){
-		$("#sndmsg").click(function(){
-			if($("#msg").val()=="")
-				alert("message is empty!");
-			else{
-				var count = 0;
-				var msg = "> ";
-				msg = msg + $("#msg").val(); 
+<script>
+function createJSON(my_form){
+	var arr = my_form.getElementsByTagName("input"); 
+	var jsonObj = {};
+	jsonObj["username"] = arr[0].value.toString();
+	jsonObj["password"] = arr[1].value.toString();
+	jsonObj["nickname"] = arr[2].value.toString();
+	jsonObj["description"] = arr[3].value.toString();
+	jsonObj["photo"] = arr[4].value.toString();
+	
+	return jsonObj;
+}
+ </script>
 
-				
-				$("#conversation").append('<a class="list-group-item list-group-item-success" id="jj")>'+msg+'</a>'); 
-
-					
-				}
-				
-				$("#msg").val(""); 
-			});
- });
- 
- $(document).on("click", "#jj", function(this){
-	 alert("jj"); 
- });
- </script>
-  -->
  <script>
- $(document).ready(function(){
-	 $(".msg_rply").on("click",function(){
-		 alert("clicked"); 
-	 });
-	 
-	 $("viewchildren").click(function(){
-		 alert(function(){
-			 var msg = "";
-			 var children = $("#msgs").children("a");
-			 for(var i=0;i<children.length;i++){
-				 
-			 }
-		 });
-	 });
- });
+function createMessage(msg){
+	return '<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>';
+}
  </script>
  
  <script>
- $(document).raedy(function(){
-		var line = $("#cnvrs").val().split('\n'); 
-		$.each(lines, function(key, line){
-			alert(key + ":" + value); 
-		});
- });
+function handleReply(){
+	alert("reply needed");
+}
  </script>
 </head>
 
@@ -213,7 +177,7 @@ websocket.send("client to server");
 					<input type="text" class="form-control" id="photo">
 					
 					</div>
-					<button type="button" class="btn btn-default" id="t">register</button>
+					<button type="button" class="btn btn-default" id="rgstrBtn">register</button>
 					<p>* optional</p>
 				</form>
 			</div>
@@ -242,7 +206,7 @@ websocket.send("client to server");
 				</object>
 			</div>
 			
-			<!-- messages -->
+			<!-- messages and channels-->
 			<div class="col-sm-6">
 				<div class="container">
 					<!-- messages -->
@@ -255,6 +219,15 @@ websocket.send("client to server");
 					<!-- channels -->
 					<div class="col-sm-4">
 						<h2>channels</h2>
+						<div class="dropdown">
+  							<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+  							<span class="caret"></span></button>
+  							<ul class="dropdown-menu">
+    							<li><a href="#">HTML</a></li>
+    							<li><a href="#">CSS</a></li>
+    							<li><a href="#">JavaScript</a></li>
+  							</ul>
+						</div>
 					</div>
 
 				</div>
@@ -263,18 +236,25 @@ websocket.send("client to server");
 		</div>
 	</div>
 	
-	<div class="row" id="lastrow">
-		<div class="container" id="msgs">
-			<h1 id="lasth"></h1>
-			
-			<p id="lastp">
-				<span id="myspan"></span>
-			</p>
-			<button type="button" class="btn btn-default" id="viewchildren">view children</button>
-			<br>
+	<div class="message">
+		<h2 id="lasth">message</h2>
+		<div class="container" id="msgs" style="border-style: solid none solid none, border-width:5px">			
+			<div class="col-sm-4">
+				<span class="label label-primary">user name:</span>
+			</div>
+			<div class="col-sm-4">
+				<p>text goes here</p>
+			</div>
+			<div class="col-sm-4">
+				<a id="reply" href="#msg" onclick="handleReply()">reply</a>
+			<!-- 
+				<button type="button" class="btn btn-default" id="viewchildren">reply</button>
+			-->
+			</div>	
 		</div>
 	</div>
 
 	<p>&copy; WebApp fall semester 2017</p>
+	<br>
 </body>
 </html>
