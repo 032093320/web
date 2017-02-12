@@ -4,8 +4,8 @@
 <title>main Page</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initialscale=1"> 
-<link rel="stylesheet" href="lib\bootstrap-3.3.7-dist\css\bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="lib\bootstrap-3.3.7-dist\mainCss.css?version=1"/>
+<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/style.css"/>
 <script src=http://code.jquery.com/jquery-1.11.3.min.js></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
 <!--  
@@ -76,10 +76,67 @@ ul {
 	list-style:none;
 }
 </style>
+ var app = angular.module('myApp',[]);
+	 app.directive('my-Directive', function(){
+		return {
+			require: 'ngModel',
+			link: function(scope, element, attr, mCtrl){
+				function validate(value){
+					if(value.indexOf(",") != -1){
+						alert("can't use ',' character");
+					}
+					else{
+						mCtrl.$setValidity('charE', true);
+					}
+					return value;
+				}
+				mCtrl.$parsers.push(validate);
+			}
+		}; 
+	 });
+	 
+	 onKeyUp="validate(this.value, this.id)"
  -->
- <script>
- $(document).ready(function(){
+ 
+ <Script>
+ function createMessage(msg){
+		return "<div class='container' id='msgs' style='border-style: none none solid none'>" + 			
+					"<div class='col-sm-4'>" + 
+						"<p><span class='label label-primary'>user name:</span></p>" + 
+					"</div>" + 
+					"<div class='col-sm-4'>" + 
+						"<p>" + msg + "</p>" + 
+					"</div>" + 
+					"<div class='col-sm-4'>" + 
+						"<p><a id='reply' href='#msg' onclick='handleReply()'>reply</a></p>" + 
+					"</div>" + 
+				"</div>"; 	
+	}
+
+function handleReply(){
+		alert("reply needed");
+	}
+
+function validate(text, id){
+	var location = text.indexOf(",");
+	var count = text.length;
+	
+	if (count>=10){
+		alert("too many charachters' only 10 allowed");
+	}
+	if(location != -1){
+		 alert("can't use the charrachter: ,");
+		 document.getElementById(id).value = "";
+	 }
+		 
+}
+ </Script>
+ 
+ <script> 
+$(document).ready(function(){
+		 
 	$("#rgstrBtn").click(function(){
+		alert("");
 		var my_form = document.getElementById("frm");
 		var url = 'http://localhost:8080/webapp/UserServlet' + '?query=insert';		
 		var myjson = JSON.stringify(createJSON(my_form));
@@ -89,17 +146,7 @@ ul {
 			alert(data);
 		});
 	});	
-});
-
-function getUser(){
-	var username = $("#user").val();
-	if (username == "") username = "guest";
-	return username;
-} 
-</script>
- 
- <script> 
- $(document).ready(function(){
+		
 	 $("#sndmsg").click(function(event){
 		 var msg = $("#msg").val(); 
 		event.preventDefault();
@@ -110,37 +157,27 @@ function getUser(){
 				$("#msg").val("");
 			}
 	 });
- });
- </script>
- 
-<script>
-function createJSON(my_form){
-	var arr = my_form.getElementsByTagName("input"); 
-	var jsonObj = {};
-	jsonObj["username"] = arr[0].value.toString();
-	jsonObj["password"] = arr[1].value.toString();
-	jsonObj["nickname"] = arr[2].value.toString();
-	jsonObj["description"] = arr[3].value.toString();
-	jsonObj["photo"] = arr[4].value.toString();
-	
-	return jsonObj;
-}
- </script>
+	 
+	 function createJSON(my_form){
+			var arr = my_form.getElementsByTagName("input"); 
+			var jsonObj = {};
+			jsonObj["username"] = arr[0].value.toString();
+			jsonObj["password"] = arr[1].value.toString();
+			jsonObj["nickname"] = arr[2].value.toString();
+			jsonObj["description"] = arr[3].value.toString();
+			jsonObj["photo"] = arr[4].value.toString();
+			
+			return jsonObj;
+		}
 
- <script>
-function createMessage(msg){
-	return '<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>';
-}
+ });
+ 
+
  </script>
  
- <script>
-function handleReply(){
-	alert("reply needed");
-}
- </script>
 </head>
 
-<body>
+<body data-ng-app="maApp">
 	<header>welcome guest! please 	
 	<a href="">sign in</a>
 	or
@@ -152,7 +189,7 @@ function handleReply(){
 				<div class="col-sm-3">
 					<div class="container">
 					<h1 class="display-2">Add here</h1>
-					<p class="ex" align="center">use this great place to advocate your business</p>
+					<p class="ex">use this great place to advocate your business</p>
 					<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
 				</div>
 				</div>
@@ -194,16 +231,13 @@ function handleReply(){
 	</div>
 	
 	<div class="jumbotron">
-		<div class="container" overflow="auto">
+		<div class="container" >
 			<!-- conversations -->
-			<div class="col-sm-6" >	
-				<object height="40px" >
+			<div class="col-sm-6">	
 					<h2>conversation</h2>
-					<!-- <textarea class="form-control" rows="10" cols="7" id="cnvrs"></textarea> -->
 					<ul class="list-group" id="conversation" >
 					</ul>
 					<br>
-				</object>
 			</div>
 			
 			<!-- messages and channels-->
@@ -211,7 +245,7 @@ function handleReply(){
 				<div class="container">
 					<!-- messages -->
 					<div class="col-sm-8">
-						<h2 align="center"> new message</h2>
+						<h2> new message</h2>
 						<textarea class="form-control" rows="5" cols="4" id="msg"></textarea>
 						<br>
 						<button type="button" class="btn btn-default" id="sndmsg">send</button>
@@ -237,8 +271,8 @@ function handleReply(){
 	</div>
 	
 	<div class="message">
-		<h2 id="lasth">message</h2>
-		<div class="container" id="msgs" style="border-style: solid none solid none, border-width:5px">			
+		<h2 id="lasth">this a test area for the webapp</h2>
+		<div class="container" id="msgs" style="border-style: none none solid none">			
 			<div class="col-sm-4">
 				<span class="label label-primary">user name:</span>
 			</div>
