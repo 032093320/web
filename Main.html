@@ -76,10 +76,62 @@ ul {
 	list-style:none;
 }
 </style>
+ $(document).ready(function{
+	$("#user").keyup(function(){
+		alert();
+	}); 
+ });
+onKeyUp="validate(this.value, this.id)"
  -->
  <script>
+ function createMessage(msg){
+		return "<div class='container' id='msgs' style='border-style: none none solid none'>" + 			
+					"<div class='col-sm-4'>" + 
+						"<p><span class='label label-primary'>user name:</span></p>" + 
+					"</div>" + 
+					"<div class='col-sm-4'>" + 
+						"<p>" + msg + "</p>" + 
+					"</div>" + 
+					"<div class='col-sm-4'>" + 
+						"<p><a id='reply' href='#msg' onclick='handleReply()'>reply</a></p>" + 
+					"</div>" + 
+				"</div>"; 	
+	}
+ 
+ function validate(text, id){
+		var location = text.indexOf(",");
+		var count = text.length;
+		
+		if (count>=10){
+			alert("too many charachters' only 10 allowed");
+		}
+		if(location != -1){
+			 alert("can't use the charrachter: ,");
+			 document.getElementById(id).value = "";
+		 }
+	}
+ 
+ function createJSON(my_form){
+		var arr = my_form.getElementsByTagName("input"); 
+		var jsonObj = {};
+		jsonObj["username"] = arr[0].value.toString();
+		jsonObj["password"] = arr[1].value.toString();
+		jsonObj["nickname"] = arr[2].value.toString();
+		jsonObj["description"] = arr[3].value.toString();
+		jsonObj["photo"] = arr[4].value.toString();
+		
+		return jsonObj;
+	}
+ 
+ function handleReply(){
+		alert("reply needed");
+	}
+ </script>
+ 
+
+ <script>
  $(document).ready(function(){
-	$("#rgstrBtn").click(function(){
+	 $("#rgstrBtn").click(function(){
 		var my_form = document.getElementById("frm");
 		var url = 'http://localhost:8080/webapp/UserServlet' + '?query=insert';		
 		var myjson = JSON.stringify(createJSON(my_form));
@@ -88,18 +140,8 @@ ul {
 				function(data){
 			alert(data);
 		});
-	});	
-});
-
-function getUser(){
-	var username = $("#user").val();
-	if (username == "") username = "guest";
-	return username;
-} 
-</script>
- 
- <script> 
- $(document).ready(function(){
+	});
+	 
 	 $("#sndmsg").click(function(event){
 		 var msg = $("#msg").val(); 
 		event.preventDefault();
@@ -110,34 +152,10 @@ function getUser(){
 				$("#msg").val("");
 			}
 	 });
- });
- </script>
+	 
+});
+</script>
  
-<script>
-function createJSON(my_form){
-	var arr = my_form.getElementsByTagName("input"); 
-	var jsonObj = {};
-	jsonObj["username"] = arr[0].value.toString();
-	jsonObj["password"] = arr[1].value.toString();
-	jsonObj["nickname"] = arr[2].value.toString();
-	jsonObj["description"] = arr[3].value.toString();
-	jsonObj["photo"] = arr[4].value.toString();
-	
-	return jsonObj;
-}
- </script>
-
- <script>
-function createMessage(msg){
-	return '<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>';
-}
- </script>
- 
- <script>
-function handleReply(){
-	alert("reply needed");
-}
- </script>
 </head>
 
 <body>
@@ -162,7 +180,7 @@ function handleReply(){
 				<form id="userform">
 					<div class="form-group">
 					<label for="user">user name</label>
-					<input type="text" class="form-control" id="user">
+					<input type="text" class="form-control" id="user" onKeyUp="validate(this.value, this.id)">
 					
 					<label for="password">password</label>
 					<input type="text" class="form-control" id="password">
