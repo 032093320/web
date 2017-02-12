@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initialscale=1"> 
 <link rel="stylesheet" href="lib\bootstrap-3.3.7-dist\css\bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="WEB-INF\CSS\mainCss.css"/>
+<link rel="stylesheet" type="text/css" href="lib\bootstrap-3.3.7-dist\mainCss.css?version=1"/>
 <script src=http://code.jquery.com/jquery-1.11.3.min.js></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
- 
+<!--  
 <style>
 div.container {
 	vertical-align:middle;
@@ -76,72 +76,6 @@ ul {
 	list-style:none;
 }
 </style>
-
-<!-- 
-<script>
-var websocket = new WebSocket("ws://www.host.com/path");
-websocket.onopen = function(evt) { onOpen(evt) };
-websocket.onclose = function(evt) { onClose(evt) };
-websocket.onmessage = function(evt) { onMessage(evt) };
-websocket.onerror = function(evt) { onError(evt) }; }
-function onOpen(evt) { alert( evt.data); }
-function onClose(evt) { alert( evt.data); }
-function onMessage(evt) { alert( evt.data); }
-function onError(evt) { alert( evt.data); }
-websocket.send("client to server");
-</script>
-
-		var msg = createJSONFromUser();
-		$.post('http://localhost:8080/webapp/LoginServlet', //where to
-				msg,										//what
-				function(data, status) {					//handle rensponse
-			alert("data:" + data + "\nstatus:" + status);
-		});
-		
-						function(){
-			var user = $("#user").val();
-			if($(user == "") user = "guest;
-			return user;
-			} 
-			
-			function createJson(){
-	var user = $("#user")val();
-	var jsonObj = {
-			"username": user
-	};
-}
-
-		if(i != arr.length-1){
-			msg = msg + ", "; 
-		}
-		
-		function createJSON(){
-	jsonObj = {};
-	$("#frm input").each(function(){
-		
-		var id = $(this).attr("id");
-		var value = $(this).val();
-		
-		item = {id, value};
-		jsonObj.push(item); 
-	});
-	
-}
-function createJSONFromUser(){
-	var par = String.fromCharCode(34);	//paranthacies char
-	var spar = String.fromCharCode(39);	//single par char
-	var nl = String.fromCharCode(10);	//new line char 
-	var msg="{ ";
-	var arr=$("#frm input");
-	for(var i=0;i<arr.length;i++){
-		msg = msg + par + arr[i].id.toString() + par + ": " + arr[i].value.toString() + " ";		
-	}
-	msg = msg + " }";
-	return msg;
-	
-		var arr = $("#frm input");	
-		
-}
  -->
  <script>
  $(document).ready(function(){
@@ -172,7 +106,7 @@ function getUser(){
 		if(msg=="") alert("message is empty");
 		else
 			{
-				$("#conversation").append('<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>');
+				$("#conversation").append(createMessage(msg));
 				$("#msg").val("");
 			}
 	 });
@@ -194,30 +128,15 @@ function createJSON(my_form){
  </script>
 
  <script>
- $(document).ready(function(){
-	 $(".msg_rply").on("click",function(){
-		 alert("clicked"); 
-	 });
-	 
-	 $("viewchildren").click(function(){
-		 alert(function(){
-			 var msg = "";
-			 var children = $("#msgs").children("a");
-			 for(var i=0;i<children.length;i++){
-				 
-			 }
-		 });
-	 });
- });
+function createMessage(msg){
+	return '<a class="list-group-item list-group-item-success" id="jj" href="#msg")>'+msg+'</a>';
+}
  </script>
  
  <script>
- $(document).raedy(function(){
-		var line = $("#cnvrs").val().split('\n'); 
-		$.each(lines, function(key, line){
-			alert(key + ":" + value); 
-		});
- });
+function handleReply(){
+	alert("reply needed");
+}
  </script>
 </head>
 
@@ -317,18 +236,25 @@ function createJSON(my_form){
 		</div>
 	</div>
 	
-	<div class="row" id="lastrow">
-		<div class="container" id="msgs">
-			<h1 id="lasth"></h1>
-			
-			<p id="lastp">
-				<span id="myspan"></span>
-			</p>
-			<button type="button" class="btn btn-default" id="viewchildren">view children</button>
-			<br>
+	<div class="message">
+		<h2 id="lasth">message</h2>
+		<div class="container" id="msgs" style="border-style: solid none solid none, border-width:5px">			
+			<div class="col-sm-4">
+				<span class="label label-primary">user name:</span>
+			</div>
+			<div class="col-sm-4">
+				<p>text goes here</p>
+			</div>
+			<div class="col-sm-4">
+				<a id="reply" href="#msg" onclick="handleReply()">reply</a>
+			<!-- 
+				<button type="button" class="btn btn-default" id="viewchildren">reply</button>
+			-->
+			</div>	
 		</div>
 	</div>
 
 	<p>&copy; WebApp fall semester 2017</p>
+	<br>
 </body>
 </html>
