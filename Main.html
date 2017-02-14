@@ -81,9 +81,67 @@ ul {
 		alert();
 	}); 
  });
-onKeyUp="validate(this.value, this.id)"
+websocket.onopen = function(evt) { onOpen(evt) };
+websocket.onclose = function(evt) { onClose(evt) };
+websocket.onmessage = function(evt) { onMessage(evt) };
+websocket.onerror = function(evt) { onError(evt) }; }
+function onOpen(evt) { alert( evt.data); }
+function onClose(evt) { alert( evt.data); }
+function onMessage(evt) { alert( evt.data); }
+function onError(evt) { alert( evt.data); }
  -->
- <script>
+ 
+<script type="text/javascript">
+var wsUri = "ws://localhost:8080/webapp/echo"; 
+	
+function testWebSocket(msg)
+{
+  websocket = new WebSocket(wsUri);
+  websocket.onopen = function(msg) { onOpen(msg) };
+  websocket.onclose = function(evt) { onClose(evt) };
+  websocket.onmessage = function(evt) { onMessage(evt) };
+  websocket.onerror = function(evt) { onError(evt) };
+}
+
+function onOpen(msg)
+{
+  writeToScreen("CONNECTED");
+  doSend(msg);
+}
+
+function onClose(evt)
+{
+  writeToScreen("DISCONNECTED");
+}
+
+function onMessage(evt)
+{
+  writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+  websocket.close();
+}
+
+function onError(evt)
+{
+  writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function doSend(message)
+{
+  writeToScreen("SENT: " + message);
+  websocket.send(message);
+}
+
+function writeToScreen(message)
+{
+  var pre = document.createElement("p");
+  pre.style.wordWrap = "break-word";
+  pre.innerHTML = message;
+  document.getElementById("testMsg").appendChild(pre);
+}
+
+
+</script> 
+<script type="text/javascript">
  function createMessage(msg){
 		return "<div class='container' id='msgs' style='border-style: none none solid none'>" + 			
 					"<div class='col-sm-4'>" + 
@@ -127,14 +185,13 @@ onKeyUp="validate(this.value, this.id)"
 		alert("reply needed");
 	}
  </script>
- 
-
- <script>
+<script>
  $(document).ready(function(){
 	 $("#rgstrBtn").click(function(){
 		var my_form = document.getElementById("frm");
 		var url = 'http://localhost:8080/webapp/UserServlet' + '?query=insert';		
 		var myjson = JSON.stringify(createJSON(my_form));
+		testWebSocket(myjson); 
 		$.post(	url,
 				myjson,
 				function(data){
@@ -254,7 +311,7 @@ onKeyUp="validate(this.value, this.id)"
 		</div>
 	</div>
 	
-	<div class="message">
+	<div class="message" id="testMsg">
 		<h2 id="lasth">message</h2>
 		<div class="container" id="msgs" style="border-style: solid none solid none, border-width:5px">			
 			<div class="col-sm-4">
