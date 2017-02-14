@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>test jquery</title>
+<link rel="stylesheet" href="lib\bootstrap-3.3.7-dist\css\bootstrap.min.css"/>
+<link rel="stylesheet" href="WEB-INF\CSS\MainCss.css"/>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script>
+ 
+$(".sndBtn").click(function(){
+	var msg="clicked!";
+	alert(msg);
+});
+</script>
+
+<script>
+$(document).ready(function()
+		{
+    	$("#t").click(function(){
+        	alert("'t' id tag was pressed!");
+    	});
+    	
+    	$(".form-control").click(function(){
+    		alert("'g' class tag was pressed!");
+    	});
+});
+</script>
+</head>
+<body>
+<!-- 
+<div>
+<button id="t">Click me too</button>
+<button class="form-control">Click me three</button>
+</div>
+ -->
+			<div class="jumbotron">
+					<form>
+					<div class="form-group">
+					<label for="user">user name</label>
+					<input type="text" class="form-control" id="user">
+					
+					<label for="password">password</label>
+					<input type="text" class="form-control" id="password">
+					
+					<label for="nickname">nick name*</label>
+					<input type="text" class="form-control" id="nickname">
+					
+					<label for="description">description*</label>
+					<input type="text" class="form-control" id="description">
+					
+					<label for="photo">photo*</label>
+					<input type="text" class="form-control" id="photo">
+					
+					</div>
+					<button type="button" class="btn btn-default" id="t">register</button>
+					<p>* optional</p>
+				</form>			
+			</div>
+
+</body>
+</html>
