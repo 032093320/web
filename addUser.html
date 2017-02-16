@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="styling.css">
+	<style>
+    .container-fluid
+   {
+    background-color:orange;
+    height: 640px
+	
+   }
+   .form-container
+   {
+	width: 100%;
+	margin-left: 5%;
+	margin-right:5%;
+   }
+   .page-header
+   {	
+	   text-align:center;
+   }
+	.col-md-4
+	{
+		
+		text-align:center;
+		margin-left: 5%;
+		margin-right:5%;
+	}
+	.row
+	{
+		text-align:center;
+		width: 100%;
+		margin-left: 25%;
+		margin-right:25%;
+	}
+	.channel
+	{
+		display:none;
+	}
+	</style>
+  </head>
+  <body>
+<
+<div id = "reg" class="container-fluid">
+<div id = "chan" class = "channel">
+	<h1> Hello World </h1>  
+</div>
+<div id = "head" class="page-header">
+  <h1>Welcome visitor!</h1>
+</div>
+  <div class="row content">
+    <div class="col-md-4">
+		<h1>Hello</h1>
+		<p>Please sign in if you are not a member:</p> 
+	 <div class="form-container">
+	 <form class="form-horizontal">
+					<div class="form-group">
+					<label for="user">User name: </label>
+					<input type="text" class="form-control" id="user">
+					
+					<label for="password">Password: </label>
+					<input type="text" class="form-control" id="password">
+					
+					<label for="nickname">Nickname*: </label>
+					<input type="text" class="form-control" id="nickname">
+					
+					<label for="description">Description*: </label>
+					<input type="text" class="form-control" id="description">
+					
+					<label for="photo">Photo*: </label>
+					<input type="text" class="form-control" id="photo">
+					
+					</div>
+					
+				
+				</form>
+				</div>
+				<button type="button" class="btn btn-default" id="t" onclick="hideFunc()">Register</button>
+	
+	</div>
+  </div>		
+</div>
+
+
+
+	<script>
+	function hideFunc()
+	{
+		document.getElementById("reg").style.display='none';
+		return true;
+	}
+	</script>
+	
+
+</body>
+</html>
