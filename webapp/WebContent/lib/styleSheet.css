@@ -1,0 +1,21 @@
+
+#icon_container{
+	width:200px;
+	height:200px; 
+	position: fixed;
+	top:50%;
+	left:50%;
+	background-color:pink;
+}
+
+
+div.diamond{
+	position: relative;
+	top:-50;
+	left:-50%;
+	width:100px;
+	height:100px;
+	background: linear-gradient(to right, yellow, orange);
+    transform: rotate(45deg); /* Standard syntax */
+}
+

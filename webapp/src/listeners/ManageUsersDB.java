@@ -25,7 +25,7 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import model.Users;
+import model.User;
 import utilities.AppConstants;
 import webSockets.WebSocket;
 

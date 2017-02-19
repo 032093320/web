@@ -1,20 +1,12 @@
 package servlets;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -24,28 +16,27 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import model.Message;
+import model.Channel;
 import model.User;
 import utilities.AppConstants;
 
 /**
- * Servlet implementation class User
+ * Servlet implementation class ChannelServlet
  */
-@WebServlet("/UserServlet")
-public class UserServlet extends HttpServlet {
+@WebServlet("/ChannelServlet")
+public class ChannelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserServlet() {
+    public ChannelServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -53,7 +44,15 @@ public class UserServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		String query ="";                                              
 		System.out.println(query); //TODO:earse later
@@ -102,27 +101,25 @@ public class UserServlet extends HttpServlet {
 					break;
 					
 				case "insert":
-					
-
 					try 
 					{
 						Gson gson = new GsonBuilder().create();
-						User user = gson.fromJson(buffer.toString(), User.class); 
-						System.out.println(user.getUserName());
-						System.out.println(user.getPassword());
-						System.out.println(user.getnickName());
-						System.out.println(user.getDescription());
-						System.out.println(user.getPhoto()); 
+						Channel channel = gson.fromJson(buffer.toString(), Channel.class); 
+						/*System.out.println(channel.getUserName());
+						System.out.println(channel.getPassword());
+						System.out.println(channel.getnickName());
+						System.out.println(channel.getDescription());
+						System.out.println(channel.getPhoto()); */
 						
 						if(datasource != null)
 						{
 							connection = datasource.getConnection();
 							statement = connection.prepareStatement(AppConstants.INSERT_USERS_STMT);
-							statement.setString(1, user.getUserName());
-							statement.setString(2, user.getPassword());
-							statement.setString(3, user.getnickName());
-							statement.setString(4, user.getDescription());
-							statement.setString(5, user.getPhoto());
+							/*statement.setString(1, channel.getUserName());
+							statement.setString(2, channel.getPassword());
+							statement.setString(3, channel.getnickName());
+							statement.setString(4, channel.getDescription());
+							statement.setString(5, channel.getPhoto());*/
 						}
 						
 						statement.executeUpdate(); 
@@ -161,44 +158,7 @@ public class UserServlet extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(uri);
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().print(rs); 
+		response.getWriter().print(rs);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
-	/*
-	 * create insert query
-	 */
-	private String insert(String table, ArrayList<String> values) throws Exception 
-	{
-		int result = 0;
-		int size = values.size();
-		String query = "";
-		
-		try
-		{
-			query = "INSERT INTO " 
-					+ table
-					+ " VALUES(";
-			for(int i = 0; i < size; i++){
-				query = query + "'" + values.get(i) + "'"; 
-				if(i<size - 1)
-					query = query + ", ";
-			}
-			query = query + ")"; 		
-
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			result =-1;
-		}
-		
-		return query;
-	}
 }

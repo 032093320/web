@@ -4,231 +4,63 @@
 <title>main Page</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initialscale=1"> 
-<link rel="stylesheet" href="lib\bootstrap-3.3.7-dist\css\bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="lib\bootstrap-3.3.7-dist\mainCss.css?version=1"/>
+<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/style.css"/>
 <script src=http://code.jquery.com/jquery-1.11.3.min.js></script>
+<script type="text/javascript" src="js/ScriptFile.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
-<!--  
-<style>
-div.container {
-	vertical-align:middle;
-    width: 100%;
-    border: 1px solid gray;
-}
-div.col-sm-6 {
-	font-size:12;
-	vertical-align:middle;
-	background-color:yellow;
-}
-
-.ex {
-	height=200px;
-	
-}
-.center
-{
-	text-align:center;
-	horizontal-align:center;
-}
-
-
-header {
-    padding: 1em;
-    color: white;
-    background-color: black;
-    clear: left;
-    text-align: right;
-}
-
-footer {
-	margin:100px 0px 0px 0px;
-    padding: 1em;
-    color: white;
-    background-color: black;
-    clear: left;
-    text-align: center;
-} 
-
-nav {
-    float: left;
-    max-width: 160px;
-    margin: 0;
-    padding: 1em;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-   
-nav ul a {
-    text-decoration: none;
-}
-
-article {
-    margin-left: 170px;
-    border: 1px solid gray;
-    padding: 1em;
-    overflow: hidden;
-}
-
-ul {
-	list-style:none;
-}
-</style>
- $(document).ready(function{
-	$("#user").keyup(function(){
-		alert();
-	}); 
- });
-websocket.onopen = function(evt) { onOpen(evt) };
-websocket.onclose = function(evt) { onClose(evt) };
-websocket.onmessage = function(evt) { onMessage(evt) };
-websocket.onerror = function(evt) { onError(evt) }; }
-function onOpen(evt) { alert( evt.data); }
-function onClose(evt) { alert( evt.data); }
-function onMessage(evt) { alert( evt.data); }
-function onError(evt) { alert( evt.data); }
- -->
- 
-<script type="text/javascript">
-var wsUri = "ws://localhost:8080/webapp/echo"; 
-	
-function testWebSocket(msg)
-{
-  websocket = new WebSocket(wsUri);
-  websocket.onopen = function(msg) { onOpen(msg) };
-  websocket.onclose = function(evt) { onClose(evt) };
-  websocket.onmessage = function(evt) { onMessage(evt) };
-  websocket.onerror = function(evt) { onError(evt) };
-}
-
-function onOpen(msg)
-{
-  writeToScreen("CONNECTED");
-  doSend(msg);
-}
-
-function onClose(evt)
-{
-  writeToScreen("DISCONNECTED");
-}
-
-function onMessage(evt)
-{
-  writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-  websocket.close();
-}
-
-function onError(evt)
-{
-  writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-}
-
-function doSend(message)
-{
-  writeToScreen("SENT: " + message);
-  websocket.send(message);
-}
-
-function writeToScreen(message)
-{
-  var pre = document.createElement("p");
-  pre.style.wordWrap = "break-word";
-  pre.innerHTML = message;
-  document.getElementById("testMsg").appendChild(pre);
-}
-
-
-</script> 
-<script type="text/javascript">
- function createMessage(msg){
-		return "<div class='container' id='msgs' style='border-style: none none solid none'>" + 			
-					"<div class='col-sm-4'>" + 
-						"<p><span class='label label-primary'>user name:</span></p>" + 
-					"</div>" + 
-					"<div class='col-sm-4'>" + 
-						"<p>" + msg + "</p>" + 
-					"</div>" + 
-					"<div class='col-sm-4'>" + 
-						"<p><a id='reply' href='#msg' onclick='handleReply()'>reply</a></p>" + 
-					"</div>" + 
-				"</div>"; 	
-	}
- 
- function validate(text, id){
-		var location = text.indexOf(",");
-		var count = text.length;
-		
-		if (count>=10){
-			alert("too many charachters' only 10 allowed");
-		}
-		if(location != -1){
-			 alert("can't use the charrachter: ,");
-			 document.getElementById(id).value = "";
-		 }
-	}
- 
- function createJSON(my_form){
-		var arr = my_form.getElementsByTagName("input"); 
-		var jsonObj = {};
-		jsonObj["username"] = arr[0].value.toString();
-		jsonObj["password"] = arr[1].value.toString();
-		jsonObj["nickname"] = arr[2].value.toString();
-		jsonObj["description"] = arr[3].value.toString();
-		jsonObj["photo"] = arr[4].value.toString();
-		
-		return jsonObj;
-	}
- 
- function handleReply(){
-		alert("reply needed");
-	}
- </script>
-<script>
- $(document).ready(function(){
-	 $("#rgstrBtn").click(function(){
-		var my_form = document.getElementById("frm");
-		var url = 'http://localhost:8080/webapp/UserServlet' + '?query=insert';		
-		var myjson = JSON.stringify(createJSON(my_form));
-		testWebSocket(myjson); 
-		$.post(	url,
-				myjson,
-				function(data){
-			alert(data);
-		});
-	});
-	 
-	 $("#sndmsg").click(function(event){
-		 var msg = $("#msg").val(); 
-		event.preventDefault();
-		if(msg=="") alert("message is empty");
-		else
-			{
-				$("#conversation").append(createMessage(msg));
-				$("#msg").val("");
-			}
-	 });
-	 
-});
-</script>
- 
 </head>
 
 <body>
 	<header>welcome guest! please 	
-	<a href="">sign in</a>
+	<a id="signin" href="javascript:void(0)">sign in</a>
 	or
-	<a href="">register</a> 
+	<a href="" id="register">register</a> 
 	</header>
 	<div class="jumbotron">
+
+	<div class="modal fade" id="loginModal" role="dialog">
+		<div class="modal-dialog">
+		
+		<!-- modal content, header, body, footer -->
+			<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+      			<h2>Modal Header</h2>			
+			</div>
+			<div class="modal-body">
+				<form id="sign-in-form">
+					<div class="form-group">
+      					<label for="email">Email:</label>
+      					<input type="email" class="form-control" id="email" placeholder="Enter email">
+    				</div>
+    				<div class="form-group">
+    		  			<label for="pwd">Password:</label>
+      					<input type="password" class="form-control" id="pwd" placeholder="Enter password">
+    				</div>
+    					<div class="checkbox">
+      						<label><input type="checkbox"> Remember me</label>
+    					</div>
+    					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+      			<h3>Modal Footer</h3>
+    		</div>
+		</div>
+		
+		
+		
+		</div>
+    </div>
+
 	<div class="container">
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="container">
 					<h1 class="display-2">Add here</h1>
 					<p class="ex" align="center">use this great place to advocate your business</p>
-					<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+					<p><a type="button" class="btn btn-primary btn-lg" role="button" id="moadl">Learn more &raquo;</a></p>
 				</div>
 				</div>
 			<div class="col-sm-6" >
@@ -269,7 +101,7 @@ function writeToScreen(message)
 	</div>
 	
 	<div class="jumbotron">
-		<div class="container" overflow="auto">
+		<div class="container">
 			<!-- conversations -->
 			<div class="col-sm-6" >	
 				<object height="40px" >

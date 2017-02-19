@@ -8,6 +8,11 @@
     <param-name>DB_DATASOURCE</param-name>
     <param-value>java:comp/env/jdbc/UsersDatasource</param-value>
   </context-param>
+  <env-entry>
+    <env-entry-name>DB_DATASOURCE</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>java:comp/env/jdbc/UsersDatasource</env-entry-value>
+  </env-entry>
   <context-param>
     <param-name>DB_NAME</param-name>
     <param-value>UsersDB</param-value>
