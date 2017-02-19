@@ -49,6 +49,6 @@ public interface AppConstants {
 	
 	public final String INSERT_USERS_STMT = "INSERT INTO USERS VALUES(?,?,?,?,?)";
 	public final String SELECT_ALL_USERS_STMT = "SELECT * FROM USERS";
-	public final String SELECT_USER_BY_NAME_STMT = "SELECT * FROM USERS WHERE USERNAME=?";
+	public final String SELECT_USER_BY_NAME_STMT = "SELECT * FROM USERS WHERE USERNAME=? AND PASSWORD=?";
 	public final String SELECT_MAX_ID = "SELECT MAX(ID) FROM MESSAGE)";
 }

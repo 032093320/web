@@ -3,12 +3,14 @@
 /*all function JQuery and standard functions 	  */
 /*												  */
 /* last modified by: shahar aizikovitz			  */
-/* 			   date: 16.2.2017				   	  */
+/* 			   date: 19.2.2017				   	  */
 /**************************************************/
 
 /* VARIABLES: */
 /*------------*/
-var wsUri = "ws://localhost:8080/webapp/message";		//message socket address 
+var wsUri = "ws://localhost:8080/webapp/message";		//message socket address
+var userServletUrl = "http://localhost:8080/webapp/UserServlet";
+var LoginServletUrl = "http://localhost:8080/webapp/LoginServlet";
 
 
 /* FUNCTIONS: */
@@ -150,9 +152,13 @@ $(document).ready(function(){
 	 /*send message handling*/
 	 $("#sndmsg").click(function(event){		  
 		event.preventDefault();
-
-		var id = 1;					//TODO: add code here to handle msg counter
-		var nickname = "me"; 		//TODO: add code to get user nickname from localStorage obj
+		if(localStorage.getItem("username") == null)
+		{
+			alert("must be logged in");
+			return;
+		}
+		var m_id = 1;					//TODO: add code here to handle msg counter
+		var name = localStorage.getItem("username"); 
 		var dt = (new Date()); 		//Date(year, month, day, hours, minutes, seconds, milliseconds); 
 		var msg = $("#msg").val();	//the message
 		var reply = 0;
@@ -161,7 +167,7 @@ $(document).ready(function(){
 		
 		var obj = {	
 					id: 1, 
-					user: "me",
+					user: name,
 					timeStamp: dt,
 					content: msg,
 					test : dt,
@@ -175,13 +181,45 @@ $(document).ready(function(){
 			
 				$("#conversation").append(createMessage(msg));
 				$("#msg").val("");
-				alert(JSON.stringify(obj));		//TODO: erase later
-				messageWebSocket(JSON.stringify(obj));  
+				alert(JSON.stringify(obj)+localStorage.getItem("username"));		//TODO: erase later
+				messageWebSocket(JSON.stringify(obj));
 			}
 	 });
 	 
+	 $("#lgBtn").click(function(){
+		 var frm = document.getElementById("lg_frm");
+		 var inputArr = frm.getElementsByTagName("input");
+		 var username = inputArr[0].value;
+		 var password = inputArr[1].value;
+		 var url = userServletUrl + '?query=select&username=' + username +'&password=' + password; 
+		 $.post(url,
+				function(data){
+			 if (data == null) alert("problems..");
+			 var obj = JSON.parse(data);
+			 var user = {
+					 userName: obj.userName,
+					 password: obj.password,
+					 nickName: obj.nickName,
+					 description : obj.description,
+					 photo : obj.photo
+			 }
+			 createCurrentUser(obj);
+		 });
+		 
+		 //TODO: reset login user and password fields
+	 });
+	 
 });
- 
+
+
+function createCurrentUser(user){
+	localStorage.setItem("username", user.userName);
+	localStorage.setItem("password", user.password);
+	localStorage.setItem("nickName", user.nickName);
+	localStorage.setItem("description", user.description);
+	localStorage.setItem("photo", user.photo);
+}
+
 /* count the length of the message, under 500 characters alert the user and erase overflow*/
  function wordCount(){
 	 

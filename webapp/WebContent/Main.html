@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>main Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initialscale=1"> 
+<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/style.css"/>
+<script src=http://code.jquery.com/jquery-1.11.3.min.js></script>
+<script type="text/javascript" src="js/ScriptFile.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+</head>
+
+<body>
+	<header>welcome guest! please 	
+	<a id="signin" href="javascript:void(0)">sign in</a>
+	or
+	<a href="" id="register">register</a> 
+	</header>
+	<div class="jumbotron">
+	<!-- 
+	<div class="modal fade" id="loginModal" role="dialog">
+		<div class="modal-dialog">
+		
+		<!-- modal content, header, body, footer 
+			<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+      			<h2>Modal Header</h2>			
+			</div>
+			<div class="modal-body">
+				<form id="sign-in-form">
+					<div class="form-group">
+      					<label for="email">Email:</label>
+      					<input type="email" class="form-control" id="email" placeholder="Enter email">
+    				</div>
+    				<div class="form-group">
+    		  			<label for="pwd">Password:</label>
+      					<input type="password" class="form-control" id="pwd" placeholder="Enter password">
+    				</div>
+    					<div class="checkbox">
+      						<label><input type="checkbox"> Remember me</label>
+    					</div>
+    					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+      			<h3>Modal Footer</h3>
+    		</div>
+		</div>
+		
+		
+		
+		</div>
+    </div>
+	 -->
+	
+
+	<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="container">
+					<h1 class="display-2">log in</h1>
+						<form id="lg_frm">
+							<div class="form-group">
+								<label for="user">user name</label>
+								<input type="text" class="form-control" id="user" onKeyUp="validate(this.value, this.id)">
+					
+								<label for="password">password</label>
+								<input type="text" class="form-control" id="password">
+							</div>
+						</form>
+					<p><a type="button" class="btn btn-primary btn-lg" role="button" id="lgBtn">log in</a></p>
+				</div>
+				</div>
+			<div class="col-sm-6" >
+			<h2 class="center">register for webapp &trade;</h2>
+			<div id="frm">
+				<form id="userform">
+					<div class="form-group">
+					<label for="user">user name</label>
+					<input type="text" class="form-control" id="user" onKeyUp="validate(this.value, this.id)">
+					
+					<label for="password">password</label>
+					<input type="text" class="form-control" id="password">
+					
+					<label for="nickname">nick name*</label>
+					<input type="text" class="form-control" id="nickname">
+					
+					<label for="description">description*</label>
+					<input type="text" class="form-control" id="description">
+					
+					<label for="photo">photo*</label>
+					<input type="text" class="form-control" id="photo">
+					
+					</div>
+					<button type="button" class="btn btn-default" id="rgstrBtn">register</button>
+					<p>* optional</p>
+				</form>
+			</div>
+			</div>
+			<div class="col-sm-3">
+      			<div class="container">
+        		<h1 class="display-3">Hello, world!</h1>
+        		<p>or, try to add here</p>
+        		<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+      			</div>
+    		</div>
+		</div>
+	</div>
+	</div>
+	
+	<div class="jumbotron">
+		<div class="container">
+			<!-- conversations -->
+			<div class="col-sm-6" >	
+				<object height="40px" >
+					<h2>conversation</h2>
+					<!-- <textarea class="form-control" rows="10" cols="7" id="cnvrs"></textarea> -->
+					<ul class="list-group" id="conversation" >
+					</ul>
+					<br>
+				</object>
+			</div>
+			
+			<!-- messages and channels-->
+			<div class="col-sm-6">
+				<div class="container">
+					<!-- messages -->
+					<div class="col-sm-8">
+						<h2 align="center"> new message</h2>
+						<textarea class="form-control" rows="5" cols="4" id="msg"></textarea>
+						<br>
+						<button type="button" class="btn btn-default" id="sndmsg">send</button>
+					</div>
+					<!-- channels -->
+					<div class="col-sm-4">
+						<h2>channels</h2>
+						<div class="dropdown">
+  							<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+  							<span class="caret"></span></button>
+  							<ul class="dropdown-menu">
+    							<li><a href="#">HTML</a></li>
+    							<li><a href="#">CSS</a></li>
+    							<li><a href="#">JavaScript</a></li>
+  							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<div class="message" id="testMsg">
+		<h2 id="lasth">message</h2>
+		<div class="container" id="msgs" style="border-style: solid none solid none, border-width:5px">			
+			<div class="col-sm-4">
+				<span class="label label-primary">user name:</span>
+			</div>
+			<div class="col-sm-4">
+				<p>text goes here</p>
+			</div>
+			<div class="col-sm-4">
+				<a id="reply" href="#msg" onclick="handleReply()">reply</a>
+			<!-- 
+				<button type="button" class="btn btn-default" id="viewchildren">reply</button>
+			-->
+			</div>	
+		</div>
+	</div>
+
+	<p>&copy; WebApp fall semester 2017</p>
+	<br>
+</body>
+</html>
