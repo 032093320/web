@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="styling.css">
+	  <style>
+    .container-fluid
+   {
+    background-color:orange;
+    height: 640px
+	
+   }
+
+	.col-md-4
+	{
+		
+		text-align:center;
+		margin-left: 5%;
+		margin-right:5%;
+		
+	}
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: 500px;} 
+    }
+  .form-container
+   {
+	width: 100%;
+	margin-left: 5%;
+	margin-right:5%;
+   }
+  </style>
+  <script type="text/javascript">
+var wsUri = "ws://localhost:8080/webapp/echo"; 
+	
+function testWebSocket(msg)
+{
+  websocket = new WebSocket(wsUri);
+  websocket.onopen = function(msg) { onOpen(msg) };
+  websocket.onclose = function(evt) { onClose(evt) };
+  websocket.onmessage = function(evt) { onMessage(evt) };
+  websocket.onerror = function(evt) { onError(evt) };
+}
+
+function onOpen(msg)
+{
+  writeToScreen("CONNECTED");
+  doSend(msg);
+}
+
+function onClose(evt)
+{
+  writeToScreen("DISCONNECTED");
+}
+
+function onMessage(evt)
+{
+  writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+  websocket.close();
+}
+
+function onError(evt)
+{
+  writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function doSend(message)
+{
+  writeToScreen("SENT: " + message);
+  websocket.send(message);
+}
+
+function writeToScreen(message)
+{
+  var pre = document.createElement("p");
+  pre.style.wordWrap = "break-word";
+  pre.innerHTML = message;
+  document.getElementById("testMsg").appendChild(pre);
+}
+
+
+</script> 
+<script type="text/javascript">
+ function createMessage(msg){
+		return "<div class='container' id='msgs' style='border-style: none none solid none'>" + 			
+					"<div class='col-sm-4'>" + 
+						"<p><span class='label label-primary'>user name:</span></p>" + 
+					"</div>" + 
+					"<div class='col-sm-4'>" + 
+						"<p>" + msg + "</p>" + 
+					"</div>" + 
+					"<div class='col-sm-4'>" + 
+						"<p><a id='reply' href='#msg' onclick='handleReply()'>reply</a></p>" + 
+					"</div>" + 
+				"</div>"; 	
+	}
+ 
+ function validate(text, id){
+		var location = text.indexOf(",");
+		var count = text.length;
+		
+		if (count>=10){
+			alert("too many charachters' only 10 allowed");
+		}
+		if(location != -1){
+			 alert("can't use the charrachter: ,");
+			 document.getElementById(id).value = "";
+		 }
+	}
+   function createJSON(my_form){
+		var arr = my_form.getElementsByTagName("input"); 
+		var jsonObj = {};
+		jsonObj["channelname"] = arr[0].value.toString();
+		jsonObj["channelcreator"] = arr[1].value.toString();
+		jsonObj["channelnickname"] = arr[2].value.toString();
+		jsonObj["channeldescription"] = arr[3].value.toString();
+		jsonObj["channelprivatepublic"] = arr[4].value.toString();
+		
+		return jsonObj;
+	}
+  </script>
+  
+  <script>
+ $(document).ready(function(){
+	 $("#rgstrBtn").click(function(){
+		var my_form = document.getElementById("addchform");
+		var url = 'http://localhost:8080/webapp/ChannelServlet' + '?query=insert';		
+		var myjson = JSON.stringify(createJSON(my_form));
+		testWebSocket(myjson); 
+		$.post(	url,
+				myjson,
+				function(data){
+			alert(data);
+		});
+	});
+	 
+	 $("#sndmsg").click(function(event){
+		 var msg = $("#msg").val(); 
+		event.preventDefault();
+		if(msg=="") alert("message is empty");
+		else
+			{
+				$("#conversation").append(createMessage(msg));
+				$("#msg").val("");
+			}
+	 });
+	 
+});
+</script>
+  
+  </head>
+  <body>
+
+
+<div id = "reg" class="container-fluid">
+<div id = "head" class="page-header">
+  <h1>Add chanel</h1>
+</div>
+
+   <div class="row content">
+    <div class="col-md-2 sidenav">
+    </div>
+    <div class="col-md-8 text-left"> 
+
+    	<div class="form-container">
+	 <form id = "addchform" class="form-horizontal">
+					<div class="form-group">
+					<label for="cname">Channel name: </label>
+					<input type="text" class="form-control" id="cname">
+					
+					<label for="creator">Creator: </label>
+					<input type="text" class="form-control" id="ccreator">
+					
+					<label for="cnickname">Nickname*: </label>
+					<input type="text" class="form-control" id="cnickname">
+					
+					<label for="cdescription">Description*: </label>
+					<input type="text" class="form-control" id="cdescription">
+					
+					<div class="radio">
+					<label><input type="radio" name="optradio">Private</label>
+					</div>
+					<div class="radio">
+					<label><input type="radio" name="optradio">Public</label>
+					</div>
+					</div>
+					
+				
+				</form>
+				
+				<button type="button" class="btn btn-default" id="t" onclick="hideFunc()">Register</button>
+			</div>
+	</div>
+ 
+    <div class="col-md-2 sidenav">
+    </div>
+  </div>
+</div>	
+</body>
+</html>
