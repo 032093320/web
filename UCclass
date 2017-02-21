@@ -1,0 +1,43 @@
+package model;
+
+/**
+ * A simple bean to hold data
+ */
+public class UsersChannel {
+	private String userName, channelName;
+	
+	
+/*
+ * constructor
+ */
+	public UsersChannel(String uname, String cname) {
+		this.userName = uname;
+		this.channelName = cname;
+
+	}
+
+	public String getUsersCName() {
+		return userName;
+	}
+	public String getChannelCName() {
+		return channelName;
+	}
+
+
+	public void printUsersChannel()
+	{
+		System.out.printf("username: %s\n", this.userName);
+		System.out.printf("channelname: %s\n", this.channelName);
+
+
+	}
+
+	public void setUsersCName(String uname) {
+		this.userName = uname;		
+	}
+
+	public void setChannelCName(String cname) {
+		this.channelName = cname;		
+	}
+
+}
